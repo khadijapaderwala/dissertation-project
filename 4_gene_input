@@ -1,0 +1,8 @@
+#read table from great analysis (THESE ARE THE MAPPED GENES)
+ADgreat <- read.table("~/Documents/Thesis/DATA/GREAT_ANALYSIS/greatAD.txt", sep = "\t")
+PDgreat <- read.table("~/Documents/Thesis/DATA/GREAT_ANALYSIS/greatPD.txt", sep = "\t")
+ALSgreat <- read.table("~/Documents/2_SUG_ALS_GREAT_analysis.txt", sep = "\t")
+DLBgreat <- read.table("~/Documents/Thesis/DATA/GREAT_ANALYSIS/greatDLB.txt", sep = "\t")
+HDgreat <- read.table("~/Documents/Thesis/DATA/GREAT_ANALYSIS/greatHD.txt", sep = "\t")
+MSgreat <- read.table("~/Documents/Thesis/DATA/GREAT_ANALYSIS/greatMS.txt", sep = "\t")
+
