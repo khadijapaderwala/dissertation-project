@@ -1,0 +1,136 @@
+#data cleaning pt.1
+
+#AD data
+
+#read into dataframe
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/AD_DATA/AD.txt", header = TRUE)
+
+df$chr <- paste0(df$chr, ":") #add : to the end of the chr column
+df$Position <- paste0(df$chr, df$PosGRCh37) #merge columns
+df <- df[, c("Position", names(df)[-ncol(df)])] #make the merged column, the first column
+
+df <- df[order(df$Position), ] #put it in order
+
+df <- df[, -c(2,3,6, 8)] #remove some columns
+colnames(df)[4] ="P" #rename columns
+colnames(df)[2]= "A1"
+colnames(df)[3]= "A2"
+
+clean_df <- na.omit(df) #filters out any empty values
+
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A")#data without "NA" or "N/A" in the position column filtered through
+clean_df <- subset(clean_df, P != "NA" | P != "N/A") #data without "NA" or "N/A" in the P column filtered through
+
+AD_df <- clean_df #rename dataframe
+
+#PD DATA
+#read into dataframe
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/PD_DATA/PD.txt", header = TRUE)
+
+df <- df[order(df$SNP), ] #order the position column (titled SNPs)
+
+df <- df[, -c(4,5,6, 8, 9)] #remove columns
+colnames(df)[1] = "Position"
+colnames(df)[2] = "A1"
+colnames(df)[3] = "A2"
+colnames(df)[4] = "P"
+
+clean_df <- na.omit(df) #filters through any values that arent empty, if any columns in the row is empty it doesnt filter through
+
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A" | P != "NA" | P!= "N/A") #subset so if in the position and P column if there is no NA 
+#or N/A, it will filter through
+
+PD_df <- clean_df #rename
+PD_df$Position <-gsub("chr","",as.character(PD_df$Position)) #remove the chr letters in the Position column
+
+#ALS
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/ALS_DATA/ALS.tsv", header = TRUE)
+
+df$chromosome <- paste0(df$chromosome, ":") #add : to the end of the chr column
+df$Position <- paste0(df$chromosome, df$base_pair_location) #merge columns together
+df <- df[, c("Position", names(df)[-ncol(df)])]
+
+df <- df[ ,-c(3,4,7,8,10)] #remove columns
+colnames(df)[2] = "SNP" #rename columns
+colnames(df)[3] = "A1"
+colnames(df)[4] = "A2"
+colnames(df)[5] = "P"
+
+clean_df <- na.omit(df) #filtering missing values
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A" | SNP != "NA" | SNP != "N/A" | P != "NA" | P!= "N/A") #filtering by NA and N/A
+
+ALS_df <- clean_df
+ALS_df$A2 <- toupper(ALS_df$A2) #capitalise letters
+ALS_df$A1 <- toupper(ALS_df$A1)
+ALS_df <- ALS_df[order(ALS_df$Position), ] #put it in order
+
+#DLB
+
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/DLB_DATA/DLB.tsv", header = TRUE)
+
+df$chromosome <- paste0(df$chromosome, ":") #add : to the end of the chr column
+df$Position <- paste0(df$chromosome, df$base_pair_location) #merge columns
+df <- df[, c("Position", names(df)[-ncol(df)])] #make the merged column, the first column
+
+df <- df[, -c(4,5,8, 9, 10,11)] #remove columns
+
+colnames(df)[2] = "SNP" #rename columns
+colnames(df)[3] = "P"
+colnames(df)[4] = "A1"
+colnames(df)[5] = "A2"
+
+df <- df[, c(1, 2, 4, 5, 3)]
+
+clean_df <- na.omit(df) #filtering missing values
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A" | SNP != "NA" | SNP != "N/A" | P != "NA" | P!= "N/A") #filtering by NA and N/A
+ 
+clean_df <- clean_df[order(clean_df$Position), ]
+DLB_df <- clean_df
+
+#HD
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/HD_DATA/HD.txt", header =TRUE)
+
+df$CHR <- paste0(df$CHR, ":") #add : to the end of the chr column
+df$Position <- paste0(df$CHR, df$BP) #merge columns
+df <- df[,c(14,3,4,5,9)] #reorder columns
+
+colnames(df)[3] = "A1"
+colnames(df)[4] = "A2"
+
+df$A1<- toupper(df$A1) #capitalize
+df$A2<- toupper(df$A2)
+
+clean_df <- na.omit(df) #filtering missing values
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A" | SNP != "NA" | SNP != "N/A" | P != "NA" | P!= "N/A")
+
+clean_df <- clean_df[order(clean_df$Position), ] #order position and store as new database
+HD_df <- clean_df
+
+#MS
+df <- read.table("/Users/khadijapaderwala/Documents/Thesis/DATA/MS_DATA/MS.txt", header =TRUE)
+
+df$CHR <- paste0(df$CHR, ":") #add : to the end of the chr column
+df$Position <- paste0(df$CHR, df$BP) #merge columns
+df <- df[,c(9,4,5,7)] #reorder columns
+
+clean_df <- na.omit(df) #filtering missing values
+clean_df <- subset(clean_df, Position != "NA" | Position != "N/A" | P != "NA" | P!= "N/A")
+
+MS_df <- clean_df[order(clean_df$Position), ] #order position and store as new database
+
+#remove extra dataframes
+rm(df)
+rm(clean_df)
+
+
+
+
+
+
+
+
+
+
+
+
+
