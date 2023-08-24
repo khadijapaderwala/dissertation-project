@@ -1,0 +1,334 @@
+#MAKING A HEATMAP OF GENE OVERLAPS
+#matrix
+A = matrix( 
+  c(0,5,7,7,0,8,
+    5,0,9,13,0,7,
+    7,9,0,2,0,24,
+    7,13,2,0,0,0,
+    0,0,0,0,0,0,
+    8,7,24,0,0,0), # the data elements 
+  nrow=6,              # number of rows 
+  ncol=6,              # number of columns 
+  byrow = TRUE)   
+
+dimnames(A) = list( 
+  c("AD", "PD","ALS","DLB","HD", "MS"),          
+  c("AD", "PD","ALS","DLB","HD", "MS"))
+
+#heatmap 
+install.packages("ComplexHeatmap")
+library(ComplexHeatmap)
+
+# Create a heatmap to visualize the gene overlap matrix
+Heatmap(A, name = "Number of overlapping genes", show_row_names = TRUE, show_column_names = TRUE,
+        show_column_dend = FALSE,
+        show_row_dend = FALSE,
+        cluster_rows = FALSE,
+        cluster_columns = FALSE)
+
+
+#GENE OVERLAPS
+genelist1 <- ADgreat$V1
+genelist2 <- PDgreat$V1
+genelist3 <- ALSgreat$V1
+genelist4 <- DLBgreat$V1
+genelist5 <- HDgreat$V1
+genelist6 <- MSgreat$V1
+
+AD_PD_overlap <- intersect(genelist1, genelist2)
+AD_ALS_overlap <- intersect(genelist1, genelist3)
+AD_DLB_overlap <- intersect(genelist1, genelist4)
+AD_HD_overlap <- intersect(genelist1, genelist5)
+AD_MS_overlap <- intersect(genelist1, genelist6)
+
+PD_ALS_overlap <- intersect(genelist2, genelist3)
+PD_DLB_overlap <- intersect(genelist2, genelist4)
+PD_HD_overlap <- intersect(genelist2, genelist5)
+PD_MS_overlap <- intersect(genelist2, genelist6)
+
+ALS_DLB_overlap <- intersect(genelist3, genelist4)
+ALS_HD_overlap <- intersect(genelist3, genelist5)
+ALS_MS_overlap <- intersect(genelist3, genelist6)
+
+DLB_HD_overlap <- intersect(genelist4, genelist5)
+DLB_MS_overlap <- intersect(genelist4, genelist6)
+
+HD_MS_overlap <- intersect(genelist5, genelist6)
+
+
+#pathways overlap
+pathlist1 <- AD_filtered$ID
+pathlist2 <- PD_filtered$ID
+pathlist3 <- ALS_filtered$ID
+pathlist4 <- DLB_filtered$ID
+pathlist5 <- HD_filtered$ID
+pathlist6 <- MS_filtered$ID
+
+AD_PD_pathway <- intersect(pathlist1, pathlist2)
+AD_ALS_pathway <- intersect(pathlist1, pathlist3)
+AD_DLB_pathway <- intersect(pathlist1, pathlist4)
+AD_HD_pathway <- intersect(pathlist1, pathlist5)
+AD_MS_pathway <- intersect(pathlist1, pathlist6)
+
+PD_ALS_pathway <- intersect(pathlist2, pathlist3)
+PD_DLB_pathway <- intersect(pathlist2, pathlist4)
+PD_HD_pathway <- intersect(pathlist2, pathlist5)
+PD_MS_pathway <- intersect(pathlist2, pathlist6)
+
+ALS_DLB_pathway <- intersect(pathlist3,pathlist4)
+ALS_HD_pathway <- intersect(pathlist3, pathlist5)
+#ALS_MS_pathway <- 
+intersect(pathlist3, pathlist6)
+
+DLB_HD_pathway <- intersect(pathlist4, pathlist5)
+DLB_MS_pathway <- intersect(pathlist4, pathlist6)
+
+HD_MS_pathway <- intersect(pathlist5, pathlist6)
+
+
+
+#GOSEMSIM
+library(GOSemSim)
+hsGO <- godata('org.Hs.eg.db', ont="BP")
+
+#AD_PD_sim <-
+mgoSim(pathlist1, pathlist2, semData=hsGO, measure="Wang", combine="BMA")
+#AD_ALS_sim <- 
+mgoSim(pathlist1, pathlist3, semData=hsGO, measure="Wang", combine="BMA")
+#AD_DLB_sim <-
+mgoSim(pathlist1, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
+#AD_HD_sim <- 
+mgoSim(pathlist1, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
+#AD_MS_sim <- 
+mgoSim(pathlist1, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
+
+#PD_ALS_sim <-
+mgoSim(pathlist2, pathlist3, semData=hsGO, measure="Wang", combine="BMA")
+#PD_DLB_sim <- 
+mgoSim(pathlist2, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
+#PD_HD_sim <- 
+mgoSim(pathlist2, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
+#PD_MS_sim <- 
+mgoSim(pathlist2, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
+
+#ALS_DLB_sim <- 
+mgoSim(pathlist3, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
+#ALS_HD_sim <- 
+mgoSim(pathlist3, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
+#ALS_MS_sim <- 
+mgoSim(pathlist3, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
+
+#DLB_HD_sim <- 
+mgoSim(pathlist4, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
+#DLB_MS_sim <- 
+mgoSim(pathlist4, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
+
+#HD_MS_sim <- 
+mgoSim(pathlist5, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
+
+
+
+
+
+#This filters to only include GO terms above 0.8
+library(dplyr)
+#AD-PD
+AD_PD_sim <- mgoSim(pathlist1, pathlist2, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(AD_PD_sim), ncol(AD_PD_sim)),
+                dim2 = rep(colnames(AD_PD_sim), each = nrow(AD_PD_sim)),
+                value = c(AD_PD_sim))
+subset_dataframe <- x[x$value > 0.8, ]
+ad_pd_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#AD-ALS
+AD_ALS_sim <- mgoSim(pathlist1, pathlist3, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(AD_ALS_sim), ncol(AD_ALS_sim)),
+                dim2 = rep(colnames(AD_ALS_sim), each = nrow(AD_ALS_sim)),
+                value = c(AD_ALS_sim))
+subset_dataframe <- x[x$value > 0.8, ]
+ad_als_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#AD-LBD
+AD_DLB_sim <- mgoSim(pathlist1, pathlist4, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(AD_DLB_sim), ncol(AD_DLB_sim)),
+                dim2 = rep(colnames(AD_DLB_sim), each = nrow(AD_DLB_sim)),
+                value = c(AD_DLB_sim))
+subset_dataframe <- x[x$value > 0.8, ]
+ad_dlb_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#AD-HD
+Sim <- mgoSim(pathlist1, pathlist5, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+ad_hd_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#AD-MS
+Sim <- mgoSim(pathlist1, pathlist6, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+ad_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+
+
+#PD-ALS
+Sim <- mgoSim(pathlist2, pathlist3, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+pd_als_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#PD-DLB
+Sim <- mgoSim(pathlist2, pathlist4, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+pd_dlb_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#PD-HD #NO VALUES
+#PD-MS
+Sim <- mgoSim(pathlist2, pathlist6, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+pd_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+
+
+#ALS-DLB
+Sim <- mgoSim(pathlist3, pathlist4, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+als_dlb_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#ALS-HD #NO VALUES
+#ALS-MS
+Sim <- mgoSim(pathlist3, pathlist6, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+als_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+
+
+#DLB-HD
+Sim <- mgoSim(pathlist4, pathlist5, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+dlb_hd_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+#DLB-MS
+Sim <- mgoSim(pathlist4, pathlist6, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+dlb_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+
+
+#HD-MS
+Sim <- mgoSim(pathlist5, pathlist6, semData=hsGO, measure="Wang", combine=NULL)
+
+x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
+                dim2 = rep(colnames(Sim), each = nrow(Sim)),
+                value = c(Sim))
+subset_dataframe <- x[x$value > 0.8, ]
+hd_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
+
+
+
+
+
+
+
+
+#ANNOTATE ALL THE TOP GO TERMS EXTRACTED FROM ALL THE OVERLAP 
+BiocManager::install("org.Hs.eg.db", force = TRUE) 
+library(org.Hs.eg.db)
+
+go_terms <- c(
+  "GO:0002399", "GO:0002396", "GO:0002503", "GO:0002501", "GO:0002495", 
+  "GO:0019886", "GO:0002478", "GO:0002504", "GO:0048002", "GO:0019882", 
+  "GO:0019884", "GO:0002381", "GO:0002292", "GO:0042093", "GO:0002294", 
+  "GO:0002293", "GO:0002285", "GO:0002286", "GO:0002287", "GO:0016064", 
+  "GO:0043379", "GO:0030217", "GO:0002696", "GO:0051251", "GO:0050867", 
+  "GO:0036465", "GO:0099504", "GO:0099003", "GO:0016050", "GO:0006898", 
+  "GO:0030100", "GO:0045807", "GO:0032768", "GO:0016444"
+)
+
+  
+definitions <- list() 
+
+for (go_id in go_terms) {
+  go_definition <- GOTERM[[go_id]]@Term
+  definitions[[go_id]] <- go_definition
+}
+
+definitions_df$TERM <- data.frame(GO_ID = names(definitions), Definition = unlist(definitions), row.names = NULL)
+
+print(definitions_df)
+
+#format
+updated_definitions_df <- data.frame(GO_ID = definitions_df$GOID, Term = definitions_df$Term) 
+install.packages("DT")
+library(DT)
+datatable(definitions_df)
+
+###############################################################################
+# Create a list of GO terms
+go_terms <- c(
+  "GO:0002460", "GO:0002443", "GO:0002449", "GO:0002696", "GO:0051251",
+  "GO:0050867", "GO:0022409", "GO:0045785", "GO:0048002", "GO:0002399",
+  "GO:0002396", "GO:0002501", "GO:0002503", "GO:0016064", "GO:0019724",
+  "GO:0050863", "GO:0022407", "GO:1903131", "GO:0002478", "GO:0002455",
+  "GO:0030098", "GO:0045066", "GO:0030217", "GO:0002335", "GO:0030183",
+  "GO:0019882", "GO:0019886", "GO:0019884", "GO:0002822", "GO:0002819",
+  "GO:0002495", "GO:0002381", "GO:0002504", "GO:0070661", "GO:0002703",
+  "GO:0002706", "GO:0002697", "GO:0002456", "GO:0002705", "GO:0002286",
+  "GO:0002287", "GO:0002292", "GO:0042093", "GO:0002294", "GO:0002293",
+  "GO:0002699", "GO:0045589", "GO:0045619", "GO:0045577", "GO:1903706",
+  "GO:1903708", "GO:0043379", "GO:1902105", "GO:1902107", "GO:0002361",
+  "GO:0002440", "GO:0002377", "GO:0045621", "GO:0002366", "GO:0002285",
+  "GO:0002312", "GO:0045591", "GO:0042113", "GO:0001912", "GO:0002263",
+  "GO:0002275", "GO:0031343", "GO:0031341", "GO:0006956", "GO:0002253",
+  "GO:0002768", "GO:0002764", "GO:0002757", "GO:0002765", "GO:0002429",
+  "GO:0050852", "GO:0001906", "GO:0046718", "GO:0044409", "GO:0090715",
+  "GO:0090713", "GO:0002695", "GO:0050869", "GO:0032815", "GO:0051250",
+  "GO:0002683", "GO:0050764", "GO:2000425", "GO:0051701", "GO:0043380",
+  "GO:0050866", "GO:0019058", "GO:0016032", "GO:0050766", "GO:0045862",
+  "GO:0044403", "GO:0002712", "GO:0002889", "GO:0002923", "GO:0002704",
+  "GO:0002707", "GO:0006312", "GO:0002698", "GO:0045833", "GO:0006958",
+  "GO:0050777", "GO:0002921", "GO:0002820", "GO:0030449", "GO:1903039",
+  "GO:1903037", "GO:0032943", "GO:0002708", "GO:0043367", "GO:0045582",
+  "GO:0046632", "GO:0045580", "GO:0046634", "GO:0002474", "GO:0072539",
+  "GO:0072538", "GO:0002360", "GO:2000316", "GO:0042088", "GO:0043368",
+  "GO:0032816", "GO:0097028", "GO:0045058", "GO:0045063", "GO:0045637",
+  "GO:2001198", "GO:0050851", "GO:0031294", "GO:0016444", "GO:0002825",
+  "GO:0034116", "GO:0045939", "GO:0010952", "GO:0045064", "GO:0050871",
+  "GO:0002763"
+)
+
+definitions <- list() 
+
+x <- for (go_id in go_terms) {
+  go_definition <- GOTERM[[go_id]]@Term
+  definitions[[go_id]] <- go_definition
+}
+
+definitions_df_ad_ms <- data.frame(GO_ID = character(0), Definition = character(0), stringsAsFactors = FALSE)
+
+for (go_id in go_terms) {
+  definitions_df_ad_ms <- rbind(definitions_df_ad_ms, data.frame(GO_ID = go_id, Definition = definitions[[go_id]], stringsAsFactors = FALSE))
+}
