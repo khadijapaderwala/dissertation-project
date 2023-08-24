@@ -1,0 +1,93 @@
+#GREAT ANALYSIS
+
+#set repository and install packages
+setRepositories()
+
+install.packages("clusterProfiler")
+library(clusterProfiler)
+install.packages("org.Hs.eg.db")
+library(org.Hs.eg.db)
+
+
+#make a gene list for AD
+gene_list <- ADgreat$V1
+#enrich
+AD_enrichment <- enrichGO(gene = gene_list, 
+                          OrgDb = org.Hs.eg.db, 
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+#make a gene list for PD
+gene_list <- PDgreat$V1
+#enrich
+PD_enrichment <- enrichGO(gene = gene_list, 
+                          OrgDb = org.Hs.eg.db, 
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+#make a gene list for ALS
+gene_list <- ALSgreat$V1 #48 genes
+#enrich
+ALS_enrichment <- enrichGO(gene = gene_list, # 0 pathways
+                          OrgDb = org.Hs.eg.db, 
+                          pvalueCutoff = 0.05,
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+#make a gene list for DLB
+gene_list <- DLBgreat$V1
+#enrich
+DLB_enrichment <- enrichGO(gene = gene_list, 
+                          OrgDb = org.Hs.eg.db, 
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+#make a gene list for HD
+gene_list <- HDgreat$V1
+#enrich
+HD_enrichment <- enrichGO(gene = gene_list, 
+                          OrgDb = org.Hs.eg.db, 
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+#make a gene list for MS
+gene_list <- MSgreat$V1
+#enrich
+MS_enrichment <- enrichGO(gene = gene_list, 
+                          OrgDb = org.Hs.eg.db, 
+                          keyType = "SYMBOL",
+                          ont = "BP")
+
+
+#this is only to see it in a readable data frame, the cut off pvalue is already applied at 0.05
+AD_filtered <- AD_enrichment[AD_enrichment$p.adjust < 0.05, ]
+PD_filtered <- PD_enrichment[PD_enrichment$p.adjust < 0.05, ]
+ALS_filtered <- ALS_enrichment[ALS_enrichment$p.adjust < 0.05, ]
+DLB_filtered <- DLB_enrichment[DLB_enrichment$p.adjust < 0.05, ]
+MS_filtered <- MS_enrichment[MS_enrichment$p.adjust < 0.05, ]
+HD_filtered <- HD_enrichment[HD_enrichment$p.adjust < 0.05, ]
+
+#enrichment for overlapping genes from als_ms
+
+#test
+overlap_als_ms_enrichment <- enrichGO(gene = ALS_MS_overlap, 
+                                      OrgDb = org.Hs.eg.db, 
+                                      keyType = "SYMBOL",
+                                      ont = "BP")
+
+als_ms_filtered <- overlap_als_ms_enrichment[overlap_als_ms_enrichment$p.adjust < 0.05, ]
+
+#some visualization
+library(enrichplot)
+
+#Some data visualization 
+dotplot(AD_enrichment, title= "Alzheimer's disease",font.size= 10)
+dotplot(PD_enrichment, title= "Parkinson's disease",font.size= 10)
+dotplot(ALS_enrichment, title= "Amyotrophic lateral sclerosis",font.size= 10)
+dotplot(DLB_enrichment, title= "Dementia with Lewy bodies", font.size= 10)
+dotplot(HD_enrichment, title= "Huntington's disease", font.size= 10)
+dotplot(MS_enrichment, title= "Multiple sclerosis", font.size= 10)
+dotplot(overlap_als_ms_enrichment)
+
+rm(gene_list)
+rm(ADgreat,PDgreat,ALSgreat,DLBgreat,HDgreat,MSgreat,ALS_MS_overlap)
