@@ -1,0 +1,59 @@
+#remove the suggestive dataframes
+rm (sug_AD_df,sug_ALS_df,sug_DLB_df,sug_HD_df,sug_MS_df,sug_PD_df)
+    
+#seperate values into seperate columns
+library(tidyverse)
+
+P_AD_df <- P_AD_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+P_PD_df <- P_PD_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+P_ALS_df <- P_ALS_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+P_DLB_df <- P_DLB_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+P_HD_df <- P_HD_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+P_MS_df <- P_MS_df %>%
+  separate(Position, into = c("Chromosome", "Position_start"), sep = ":", remove = FALSE)
+
+#adding end location column- AD
+P_AD_df$Position_start <- as.numeric(P_AD_df$Position_start)
+P_AD_df$Position_end <- P_AD_df$Position_start + 1
+P_AD_df <- P_AD_df[,c(2,3,7,4,5,6)]  
+P_AD_df$Chromosome <- as.integer(P_AD_df$Chromosome)
+
+#adding end location column- PD
+P_PD_df$Position_start <- as.numeric(P_PD_df$Position_start)
+P_PD_df$Position_end <- P_PD_df$Position_start + 1
+P_PD_df$Chromosome <- as.integer(P_PD_df$Chromosome)
+P_PD_df <- P_PD_df[,c(2,3,7,4,5,6)]
+
+#adding end location column - ALS
+P_ALS_df$Chromosome <- as.integer(P_ALS_df$Chromosome)
+P_ALS_df$Position_start <- as.numeric(P_ALS_df$Position_start)
+P_ALS_df$Position_end <- P_ALS_df$Position_start + 1
+P_ALS_df <- P_ALS_df[,c(2,3,8,5,6,7)]
+
+#adding end location column- DLB
+P_DLB_df$Chromosome <- as.integer(P_DLB_df$Chromosome)
+P_DLB_df$Position_start <- as.numeric(P_DLB_df$Position_start)
+P_DLB_df$Position_end <- P_DLB_df$Position_start + 1
+P_DLB_df <- P_DLB_df[,c(2,3,8,5,6,7)]
+
+#adding end location column- HD
+P_HD_df$Chromosome <- as.integer(P_HD_df$Chromosome)
+P_HD_df$Position_start <- as.numeric(P_HD_df$Position_start)
+P_HD_df$Position_end <- P_HD_df$Position_start + 1
+P_HD_df <- P_HD_df[,c(2,3,8,5,6,7)]
+
+#adding end location column -MS
+P_MS_df$Chromosome <- as.integer(P_MS_df$Chromosome)
+P_MS_df$Position_start <- as.numeric(P_MS_df$Position_start)
+P_MS_df$Position_end <- P_MS_df$Position_start + 1
+P_MS_df <- P_MS_df[,c(2,3,7,4,5,6)]
