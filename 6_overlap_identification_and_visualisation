@@ -286,7 +286,7 @@ install.packages("DT")
 library(DT)
 datatable(definitions_df)
 
-###############################################################################
+#GO TERM ANNOTATIONS
 # Create a list of GO terms
 go_terms <- c(
   "GO:0002460", "GO:0002443", "GO:0002449", "GO:0002696", "GO:0051251",
