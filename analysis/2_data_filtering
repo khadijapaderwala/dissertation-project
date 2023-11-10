@@ -1,15 +1,8 @@
 # filtering by GWAS P value (p<5 × 10−8)
 P_AD_df <- subset(AD_df, P <= 0.00000005)
 P_PD_df <- subset(PD_df, P <= 0.00000005)
-P_ALS_df <- subset(ALS_df, P <= 0.00000005) #ALS WAS CHANGED TO 0.000005
+P_ALS_df <- subset(ALS_df, P <= 0.00000005) #ALS WAS CHANGED TO 0.000005 as won't give mapped genes output
+P_ALS_df <- subset(ALS_df, P <= 0.000005) 
 P_DLB_df <- subset(DLB_df, P <= 0.00000005)
 P_HD_df <- subset(HD_df, P <= 0.00000005)
 P_MS_df <- subset(MS_df, P <= 0.00000005)
-
-#filtering by suggestive P value 
-sug_AD_df <- subset(AD_df, P <= 0.00005)
-sug_PD_df <- subset(PD_df, P <= 0.00005)
-sug_ALS_df <- subset(ALS_df, P <= 0.00005)
-sug_DLB_df <- subset(DLB_df, P <= 0.00005)
-sug_HD_df <- subset(HD_df, P <= 0.00005)
-sug_MS_df <- subset(MS_df, P <= 0.00005)
