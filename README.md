@@ -26,7 +26,9 @@ disease, amyotrophic lateral sclerosis, Lewy body dementia, Huntington’s disea
 multiple sclerosis.
 
 ## Data
-Data was gathered from the most comprehensive genome-wide association study for each disease and filtered to retain only significant genetic variants. Data for Lewy body dementia and amyotrophic lateral sclerosis was obtained from the GWAS catalog: https://www.ebi.ac.uk/gwas/. Data for the other studies were requested directly from the research team of the orignal studies.
+Data was gathered from the most comprehensive genome-wide association study for each disease and filtered to retain only significant genetic variants. Data for Lewy body dementia and amyotrophic lateral sclerosis was obtained from the GWAS catalog: https://www.ebi.ac.uk/gwas/. 
+
+Data for the other studies were requested directly from the research team of the original studies.
 
 Data requested directly from the researchers cannot be uploaded or shared due to data protection, whilst files for the publicly available data also cannot be uploaded on github due to its large file size.
 
