@@ -2,6 +2,7 @@
 
 
 This research dissertation is submitted for the MSc in Bioinformaticsat Queen Mary,University of London.
+
 Centre for Neuroscience, Surgery, and Trauma, Blizard Institute
 Barts and the London School of Medicine and Dentistry
 
