@@ -87,51 +87,51 @@ HD_MS_pathway <- intersect(pathlist5, pathlist6)
 
 
 
-#GOSEMSIM
+#GOSEMSIM, semantic similarity 
 library(GOSemSim)
 hsGO <- godata('org.Hs.eg.db', ont="BP")
 
-#AD_PD_sim <-
+#this gives best matched average single score
+AD_PD_sim <-
 mgoSim(pathlist1, pathlist2, semData=hsGO, measure="Wang", combine="BMA")
-#AD_ALS_sim <- 
+AD_ALS_sim <- 
 mgoSim(pathlist1, pathlist3, semData=hsGO, measure="Wang", combine="BMA")
-#AD_DLB_sim <-
+AD_DLB_sim <-
 mgoSim(pathlist1, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
-#AD_HD_sim <- 
+AD_HD_sim <- 
 mgoSim(pathlist1, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
-#AD_MS_sim <- 
+AD_MS_sim <- 
 mgoSim(pathlist1, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
 
-#PD_ALS_sim <-
+PD_ALS_sim <-
 mgoSim(pathlist2, pathlist3, semData=hsGO, measure="Wang", combine="BMA")
-#PD_DLB_sim <- 
+PD_DLB_sim <- 
 mgoSim(pathlist2, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
-#PD_HD_sim <- 
+PD_HD_sim <- 
 mgoSim(pathlist2, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
-#PD_MS_sim <- 
+PD_MS_sim <- 
 mgoSim(pathlist2, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
 
-#ALS_DLB_sim <- 
+ALS_DLB_sim <- 
 mgoSim(pathlist3, pathlist4, semData=hsGO, measure="Wang", combine="BMA")
-#ALS_HD_sim <- 
+ALS_HD_sim <- 
 mgoSim(pathlist3, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
-#ALS_MS_sim <- 
+ALS_MS_sim <- 
 mgoSim(pathlist3, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
 
-#DLB_HD_sim <- 
+DLB_HD_sim <- 
 mgoSim(pathlist4, pathlist5, semData=hsGO, measure="Wang", combine="BMA")
-#DLB_MS_sim <- 
+DLB_MS_sim <- 
 mgoSim(pathlist4, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
 
-#HD_MS_sim <- 
+HD_MS_sim <- 
 mgoSim(pathlist5, pathlist6, semData=hsGO, measure="Wang", combine="BMA")
 
 
+#This filters to only include GO terms above 0.8 semantic similarity score
 
-
-
-#This filters to only include GO terms above 0.8
 library(dplyr)
+
 #AD-PD
 AD_PD_sim <- mgoSim(pathlist1, pathlist2, semData=hsGO, measure="Wang", combine=NULL)
 
@@ -246,12 +246,6 @@ x <- data.frame(dim1 = rep(rownames(Sim), ncol(Sim)),
                 value = c(Sim))
 subset_dataframe <- x[x$value > 0.8, ]
 hd_ms_unique_values <- unique(c(subset_dataframe$dim1, subset_dataframe$dim2))
-
-
-
-
-
-
 
 
 #ANNOTATE ALL THE TOP GO TERMS EXTRACTED FROM ALL THE OVERLAP 
