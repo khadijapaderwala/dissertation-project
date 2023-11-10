@@ -1,4 +1,4 @@
-#GREAT ANALYSIS
+#enrichment analysis with GO terms
 
 #set repository and install packages
 setRepositories()
@@ -67,17 +67,7 @@ DLB_filtered <- DLB_enrichment[DLB_enrichment$p.adjust < 0.05, ]
 MS_filtered <- MS_enrichment[MS_enrichment$p.adjust < 0.05, ]
 HD_filtered <- HD_enrichment[HD_enrichment$p.adjust < 0.05, ]
 
-#enrichment for overlapping genes from als_ms
-
-#test
-overlap_als_ms_enrichment <- enrichGO(gene = ALS_MS_overlap, 
-                                      OrgDb = org.Hs.eg.db, 
-                                      keyType = "SYMBOL",
-                                      ont = "BP")
-
-als_ms_filtered <- overlap_als_ms_enrichment[overlap_als_ms_enrichment$p.adjust < 0.05, ]
-
-#some visualization
+#some visualization of pathways
 library(enrichplot)
 
 #Some data visualization 
@@ -90,4 +80,4 @@ dotplot(MS_enrichment, title= "Multiple sclerosis", font.size= 10)
 dotplot(overlap_als_ms_enrichment)
 
 rm(gene_list)
-rm(ADgreat,PDgreat,ALSgreat,DLBgreat,HDgreat,MSgreat,ALS_MS_overlap)
+rm(ADgreat,PDgreat,ALSgreat,DLBgreat,HDgreat,MSgreat)
