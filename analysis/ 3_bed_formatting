@@ -56,4 +56,4 @@ P_HD_df <- P_HD_df[,c(2,3,8,5,6,7)]
 P_MS_df$Chromosome <- as.integer(P_MS_df$Chromosome)
 P_MS_df$Position_start <- as.numeric(P_MS_df$Position_start)
 P_MS_df$Position_end <- P_MS_df$Position_start + 1
-P_MS_df <- P_MS_df[,c(2,3,7,4,5,6)]
+P_MS_df <- P_MS_df[,c(2,3,7,4,5,6)] 
