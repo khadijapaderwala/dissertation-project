@@ -1,11 +1,10 @@
 ### Integrative Omics Data Analysis to Identify Shared Genes and Pathways Across Neurodegenerative Diseases
-August 2023
-This research dissertation is submitted for the MSc in Bioinformatics
-at Queen Mary,
-University of London
+
+
+This research dissertation is submitted for the MSc in Bioinformaticsat Queen Mary,University of London.
 Centre for Neuroscience, Surgery, and Trauma, Blizard Institute
 Barts and the London School of Medicine and Dentistry
-Queen Mary University of London
+
 Supervisor: Dr Sarah Louise Morgan
 
 ##Description
