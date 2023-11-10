@@ -1,5 +1,5 @@
-#remove the suggestive dataframes
-rm (sug_AD_df,sug_ALS_df,sug_DLB_df,sug_HD_df,sug_MS_df,sug_PD_df)
+#BED formatting in order to upload data into GREAT online tool
+
     
 #seperate values into seperate columns
 library(tidyverse)
