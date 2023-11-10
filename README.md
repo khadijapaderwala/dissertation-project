@@ -8,7 +8,7 @@ Barts and the London School of Medicine and Dentistry
 
 Supervisor: Dr Sarah Louise Morgan
 
-##Description
+###Description
 Between 2015 and 2050 the proportion of the world’s population over 60 will
 nearly double from 12% to 22%. With an aging population comes the increased risk of
 neurodegenerative diseases, a group of disorders effecting neurons in the brain resulting in
@@ -19,6 +19,7 @@ neurodegenerative diseases share similarities in risk factors, genetic determina
 pathology and disease mechanisms, prompting the hypothesis that these diseases are different
 manifestations of the same underlying disease and treatment for one may be able to treat
 others.
+
 This study aimed to identify overlapping dysfunctional genes and pathways across the
 following diseases to determine potential drug targets: Alzheimer’s disease, Parkinson’s
 disease, amyotrophic lateral sclerosis, Lewy body dementia, Huntington’s disease and
