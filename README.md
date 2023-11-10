@@ -8,7 +8,7 @@ Barts and the London School of Medicine and Dentistry
 
 Supervisor: Dr Sarah Louise Morgan
 
-## Description
+# Description
 Between 2015 and 2050 the proportion of the world’s population over 60 will
 nearly double from 12% to 22%. With an aging population comes the increased risk of
 neurodegenerative diseases, a group of disorders effecting neurons in the brain resulting in
